@@ -1,0 +1,68 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="banner">
+    <h1> 
+        MyBooks | Udacity Activity
+    </h1>
+    <div>
+        <a class="btn cold" href="/add-book"> Add + </a>
+    </div>
+</div>
+<ul>
+    {%for book in books %}
+    <li>
+        <div class="book-title">
+            <h3> 
+                {{ book.bookTitle }} | {{ book.authorName }}
+            </h3>
+            {% if book.completed == True %}
+            <div>
+                &#10003;
+            </div>
+            {% endif %}
+        </div>
+        <p>type, {{ book.bookType }} </p>
+        {% if book.completed == False %}
+        <div class="book-actions">
+            <button class="read-book" data-id=" {{book.id}} " id="btnRead"> Read </button>
+            <button class="delete-book" data-id= {{book.id}}  id="btnDel"> Delete </button>
+        </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+<script>
+    // --------------------- to read book
+    const read_books = document.querySelectorAll('.read-book');
+    for (let i = 0; i<read_books.length; i++){
+        const read_book = read_books[i];
+        read_book.onclick=function(e){
+            console.log('read', e);
+            const bookId = e.target.dataset['id'];
+            fetch('/read/'+ bookId ,{
+                method:'PUT'
+            })
+            .then(function (res){
+                // window.location.href = "/"
+                window.open("/")
+            })
+        }
+    }
+    // --------------------- to delete book
+   const delete_books = document.querySelectorAll('.delete-book');
+    for (let i = 0; i<delete_books.length; i++){
+        const delete_book = delete_books[i];
+        delete_book.onclick=function(e){
+            console.log('delete', e);
+            const bookId = e.target.dataset['id'];
+            fetch('/delete/'+ bookId ,{
+                method:'GET'
+            })
+            .then(function (res){
+                // window.location.href = "/"
+                window.open("/")
+            })
+        }
+    }
+    </script>
+{% endblock %}

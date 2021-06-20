@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+{% block content %}
+<form id="create" action="/" method="POST">
+    <div class="form-input">
+        <label> Book Title: </label>
+        <input id="title" type="text" name="title" />
+    </div>
+    <div class="form-input">
+        <label> Book Author Name: </label>
+        <input id="author" type="text" name="author" />
+    </div>
+    <div class="form-input">
+        <label> Book Type: </label>
+        <input id="type" type="text" name="type" />
+    </div>
+    <button type="submit" href="/m" class="btn cold float-right"> Add + </button>
+</form>
+    <script>
+        document.getElementById('create').onsubmit = function (e) {
+            e.preventDefault();
+            fetch('/add-book/create', {
+                method: 'POST',
+                body: JSON.stringify({
+                    "title": document.getElementById('title').value,
+                    "author": document.getElementById('author').value,
+                    "type": document.getElementById('type').value
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(function (res){
+                // window.location.href = "/"
+                window.open("/")
+            })
+        }
+    </script>
+{% endblock %} 
